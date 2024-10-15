@@ -1,0 +1,196 @@
+﻿@page
+@model Part2.Pages.ReportIssuesModel
+@{
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Issues</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        /* Basic styling for the body and layout */
+        body {
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec); 
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 80px; 
+        }
+
+        h1 {
+            color: #2f4f4f; 
+            font-size: 2.3rem; 
+            font-weight: bold; 
+        }
+
+        label {
+            font-weight: 600; 
+            color: #333; 
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px; 
+            padding: 20px; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); 
+            background-color: #ffffff;
+        }
+
+        .form-control {
+            border-radius: 10px; 
+            background-color: #f9fafb; 
+        }
+
+        .btn-primary {
+            background-color: #006d77;
+            border-color: #006d77; 
+            font-weight: 600; 
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+            border-radius: 25px; 
+        }
+
+            .btn-primary:hover {
+                background-color: #009688; 
+                box-shadow: 0 4px 12px rgba(0, 109, 119, 0.3); 
+            }
+
+        .progress-bar {
+            background-color: #006d77;
+        }
+
+        .btn-secondary {
+            background-color: #4a5568; 
+            border-color: #4a5568;
+            font-weight: 600; 
+            border-radius: 25px; 
+        }
+
+            .btn-secondary:hover {
+                background-color: #6b7280;
+                box-shadow: 0 4px 12px rgba(74, 85, 104, 0.3); 
+            }
+
+        .mb-4 {
+            margin-bottom: 1.5rem; 
+        }
+
+        .back-btn {
+            margin-top: 20px; 
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Report an Issue</h1> <!-- Title of the page -->
+
+        <div class="card">
+            <div class="progress mb-4">
+                <div class="progress-bar" id="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    0% Complete
+                </div>
+            </div>
+
+            <!-- Form to report issues -->
+            <form method="post" enctype="multipart/form-data" id="reportForm">
+                <div class="form-group mb-4">
+                    <label for="location">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="Enter the location" required>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category" name="category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Water">Water</option>
+                        <option value="Road Infrastructure">Road Infrastructure</option>
+                        <option value="Waste Management">Waste Management</option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4" placeholder="Describe the issue..." required></textarea>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="media">Media Attachment</label>
+                    <input type="file" class="form-control-file" id="media" name="media">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Submit</button> 
+            </form>
+
+            <div class="back-btn text-center">
+                <a href="/" class="btn btn-primary">Back to Main Menu</a> 
+            </div>
+            <div class="back-btn text-center">
+                <a href="/AllReports" class="btn btn-primary">View all submitted reports</a> 
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript for dynamic progress bar -->
+    <script>
+        $(document).ready(function () {
+            const progressBar = $('#progress-bar'); // Select progress bar element
+            const totalFields = 4; // Total number of input fields
+            let progress = 0; // Progress counter
+
+            // Function to update progress bar
+            function updateProgress() {
+                const percentage = (progress / totalFields) * 100; // Calculate percentage
+                progressBar.css('width', percentage + '%'); // Set progress bar width
+                progressBar.text(Math.round(percentage) + '% Complete'); // Update text in progress bar
+            }
+
+            // Check if the input fields have data and update the progress bar
+            $('#location').on('input', function () {
+                if ($(this).val().length > 0 && progress < 1) {
+                    progress++; // Increment progress if field is filled
+                } else if ($(this).val().length === 0 && progress >= 1) {
+                    progress--; // Decrement progress if field is cleared
+                }
+                updateProgress(); // Update progress bar
+            });
+
+            $('#category').on('change', function () {
+                if ($(this).val() !== "" && progress < 2) {
+                    progress++; // Increment progress if category is selected
+                } else if ($(this).val() === "" && progress >= 2) {
+                    progress--; // Decrement progress if selection is cleared
+                }
+                updateProgress(); // Update progress bar
+            });
+
+            $('#description').on('input', function () {
+                if ($(this).val().length > 0 && progress < 3) {
+                    progress++; // Increment progress if description is provided
+                } else if ($(this).val().length === 0 && progress >= 3) {
+                    progress--; // Decrement progress if description is cleared
+                }
+                updateProgress(); // Update progress bar
+            });
+
+            $('#media').on('change', function () {
+                if ($(this).val() && progress < 4) {
+                    progress++; // Increment progress if media is attached
+                } else if (!$(this).val() && progress >= 4) {
+                    progress--; // Decrement progress if media is removed
+                }
+                updateProgress(); // Update progress bar
+            });
+        });
+    </script>
+</body>

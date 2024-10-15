@@ -1,0 +1,118 @@
+﻿@page
+@model Part2.Pages.LocalEventsModel
+@{
+}
+
+<head>
+    <title>Local Events and Announcements</title>
+
+    <style>
+        /* Styling for card components */
+        .card {
+            border: 1px solid #007BFF;
+        }
+
+        .card-title {
+            color: #007BFF; 
+        }
+
+        .card-text {
+            font-size: 14px; 
+        }
+    </style>
+</head>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h1>Local Events and Announcements</h1> 
+    </div>
+    <div class="col-md-6 text-md-left">
+        <a href="/" class="btn btn-primary">Back to Main Menu</a> 
+    </div>
+</div>
+
+<!-- Search form for filtering events -->
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="Search by category or date (dd/MM/yyyy)" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<div class="row">
+    @if (Model.Events.Count == 0) // Check if there are no events
+    {
+        <div class="col text-center">
+            <p>No events found.</p> 
+        </div>
+    }
+    else
+    {
+        // Loop through each event and display it in a card format
+        @foreach (var eventEntry in Model.Events)
+        {
+            var ev = eventEntry.Value; // Get the event details
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@ev.Name</h5> 
+                        <h6 class="card-subtitle mb-2 text-muted">@ev.Category</h6> 
+                        <p class="card-text">@ev.Description</p> 
+                        <p class="card-text"><small class="text-muted">Date: @eventEntry.Key.ToString("dd/MM/yyyy")</small></p> <!-- Event date -->
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <h3>Recommendations:</h3> 
+        @if (ViewData["RecommendedEvents"] is List<Event> recommendedEvents && recommendedEvents.Any())
+        {
+            <ul class="list-group mb-4">
+                @foreach (var recommendedEvent in recommendedEvents)
+                {
+                    <li class="list-group-item">
+                        <strong>@recommendedEvent.Name</strong> <br /> 
+                        Date: @recommendedEvent.Date.ToString("dd/MM/yyyy") <br /> 
+                        Category: @recommendedEvent.Category 
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No recommendations based on your preferences.</p> 
+        }
+
+        <h3>Categories</h3>
+        <ul class="list-group mb-4">
+            @foreach (var category in Model.UniqueCategories)
+            {
+                <li class="list-group-item">@category</li> 
+            }
+        </ul>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Upcoming Events</h3> 
+        @if (Model.UpcomingEventsQueue.Count == 0) // Check if there are no upcoming events
+        {
+            <p>No upcoming events.</p> 
+        }
+        else
+        {
+            <ul class="list-group">
+                @foreach (var upcomingEvent in Model.UpcomingEventsQueue)
+                {
+                    <li class="list-group-item">
+                        <strong>@upcomingEvent.Name</strong> <br />
+                        Date: @upcomingEvent.Date.ToString("dd/MM/yyyy") 
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>

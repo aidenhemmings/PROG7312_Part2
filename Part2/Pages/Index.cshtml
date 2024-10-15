@@ -1,0 +1,52 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<head>
+    <title>Municipal Portal</title>
+</head>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="mb-4">Welcome to the Municipal Portal</h1>
+        <p class="lead">Please select an option below:</p>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Report Issues</h5>
+                    <p class="card-text">Let us know if you're facing any issues.</p>
+                    <a href="/ReportIssues" class="btn btn-primary">Report Issues</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Local Events & Announcements</h5>
+                    <p class="card-text">Stay informed about upcoming events and important announcements.</p>
+                    <a href="/LocalEvents" class="btn btn-primary">View Events</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Service Request Status</h5>
+                    <p class="card-text">Check the status of your service requests.</p>
+                    <a href="/ServicesRequest" class="btn btn-primary">Check Status</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

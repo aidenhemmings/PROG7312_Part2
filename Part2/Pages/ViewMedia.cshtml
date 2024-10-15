@@ -1,0 +1,19 @@
+﻿@page
+@model Part2.Pages.ViewMediaModel
+@{
+}
+
+<head>
+    <title>Media Preview</title>
+</head>
+
+<h1>Media Preview</h1>
+
+@if (Model.MediaPath != null)
+{
+    <img src="@Model.MediaPath" alt="Media" style="max-width: 100%; height: auto;" />
+}
+else
+{
+    <p>No media available to display.</p>
+}
